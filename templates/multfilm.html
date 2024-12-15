@@ -1,0 +1,128 @@
+{%extends 'base.html'%}
+
+{%block content%}
+{%load static%}
+
+<style>
+    .container-kino {
+        margin-top: 100px;
+    }
+    .container-kino h1 {
+        text-align: center;
+        margin-bottom: 50px;
+        color: white;
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+    .container-kino .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    .container-kino .row .col-6,
+    .container-kino .row .col-sm-4,
+    .container-kino .row .col-md-2 {
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .container-kino .row .col-6 .p-3 {
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        overflow: hidden;
+        background-color: #fff;
+        position: relative;
+    }
+    .container-kino .row .col-6 .p-3:hover {
+        transform: translateY(-10px);
+    }
+    .container-kino .row .col-6 img {
+        width: 100%; /* Rasmni kengligini kattaroq qilish */
+        height: 350px; /* Rasmni yuqoriga kattaroq qilish */
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    .container-kino .row .col-6 .overlay {
+        position: absolute;
+        bottom: 0; /* Overlayni rasm pastida joylashtirish */
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7); /* Orqa fonni qoraytirish */
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px; /* Kichikroq ichki bo'shliq */
+        opacity: 1; /* Doimiy ko'rsatish */
+        border-radius: 0 0 10px 10px; /* Pastki chekkalarni yumaloq qilish */
+    }
+    .container-kino .row .col-6 h5 {
+        font-size: 1rem; /* Kichikroq font o'lchami */
+        color: #fff;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .container-kino .row .col-6 p {
+        font-size: 0.8rem; /* Kichikroq font o'lchami */
+        color: #fff;
+        margin-bottom: 5px;
+    }
+    .container-kino .row .col-6 p.reyting {
+        color: #f39c12;
+        font-weight: bold;
+    }
+    .container-kino .row .col-6 i.fa-solid {
+        color: #f39c12;
+    }
+</style>
+
+<div class="container-kino">
+    <h1>Qiziqarli Multfilimlar</h1>
+    <div class="row">
+        {% for multik in multfilims %}
+        <div class="col-6 col-sm-4 col-md-2 my-2">
+            <div class="p-3 border text-center position-relative">
+                <img src="{{ multik.img.url }}" alt="{{ multik.name }}">
+                <div class="overlay">
+                    <!-- Kino nomi -->
+                    <h5>{{ multik.name }}</h5>
+
+                    <!-- Yulduzcha reytingi -->
+                    <p class="reyting">
+                        {% for i in ratings %}
+                        {% if i <= multik.reyting %}
+                        <i class="fa-solid fa-star"></i>
+                        {% else %}
+                        <i class="fa-regular fa-star"></i>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+
+                    <p>Ko'rish yoshi: {{ multik.sight_age }}+</p>
+                    <p>{{ multik.description }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
