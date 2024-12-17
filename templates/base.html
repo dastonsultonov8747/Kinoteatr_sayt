@@ -7,191 +7,33 @@
     <title>SXD Tube</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap JS va Popper.js qo'shish -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+            integrity="sha384-oBqDVmMz4fnFO9gybK7fq5k4kqjReQZ13CRmxhAqe9M7lO09q02JpksA0P/WeU5b"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+            integrity="sha384-pzjw8f+ua7Kw1TIq0aI1E1j5zHQ3z5Kz8KOn9Kw8FsmU8pHPrbH7jZTpefQx3c5O"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+          integrity="sha384-KyZXEJX3QJt3Hgx1ZpP3fFnbO43nHeQG2kFf5Xbdvhlf5l0dfP9I3c06ZK1Aow2x" crossorigin="anonymous">
+
 </head>
-<style>
-    /* Navbar */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    padding: 10px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 100;
-}
-
-.navbar .logo img {
-    height: 50px;
-    width: 50px;
-    margin-right: 10px;
-}
-
-.navbar .home a,
-.navbar .menu a,
-.navbar .user-btn {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 16px;
-}
-
-.navbar .menu ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-}
-
-.navbar .user-interface {
-    display: flex;
-    align-items: center;
-}
-
-.navbar .auth-buttons a {
-    margin-left: 10px;
-    padding: 10px;
-    background-color: #6A0572;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-.navbar .user-btn {
-    background-color: #6A0572;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.navbar .dropdown {
-    display: none;
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    width: 200px;
-}
-
-.navbar .dropdown.active {
-    display: block;
-}
-
-.navbar .dropdown a,
-.navbar .dropdown .logout-btn {
-    padding: 10px;
-    text-decoration: none;
-    color: black;
-    display: block;
-}
-
-.navbar .dropdown .logout-btn {
-    background-color: #6A0572;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-.container-video-katta {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.container-video-katta video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.video-info {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.video-title h3 {
-    margin: 0;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.play-now-button-container {
-    position: absolute;
-    bottom: 50px;
-    right: 50px;
-    z-index: 10;
-}
-
-.play-now-button {
-    padding: 15px 30px;
-    background-color: #6A0572;
-    color: white;
-    border-radius: 50px;
-    cursor: pointer;
-}
-
-.video-modal {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.video-modal video {
-    max-width: 90%;
-    max-height: 90%;
-}
-
-.close-modal {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: red;
-    color: white;
-    font-size: 30px;
-    padding: 10px;
-    cursor: pointer;
-}
-
-/* Responsivlik */
-@media (max-width: 768px) {
-    .navbar .menu ul {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .navbar .menu a {
-        margin: 10px 0;
-    }
-}
-
-</style>
 <body>
 <!-- Navbar -->
 <nav class="navbar">
+    <!-- Logo qismi -->
     <div class="logo">
         <img src="https://t4.ftcdn.net/jpg/04/67/15/09/360_F_467150902_zUs6Dvp9wJLGOoQRMOqGBtXaqXAJOFTO.jpg"
              alt="SXD Logo">
         <span>SXD Tube</span>
     </div>
+
+    <!-- Home bo'limi -->
     <div class="home">
         <a href="{% url 'index' %}">Home</a>
     </div>
+
+    <!-- Menu bo'limi -->
     <div class="menu">
         <ul>
             <li><a href="{% url 'multfilimlar' %}">Multfilm</a></li>
@@ -200,30 +42,34 @@
             <li><a href="{% url 'seriallar' %}">Seriallar</a></li>
         </ul>
     </div>
+
+    <!-- Qidiruv oynasi -->
     <div class="search-call">
         <input type="text" placeholder="Qidirish...">
         <button class="call-icon">🔎</button>
     </div>
+
+    <!-- Foydalanuvchi menyusi -->
     <div class="user-interface">
         <img class="image"
              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgqugyJge8XSwS5JVVpb1_BxA-w2Ue8H8Kiw&s"
              alt="User Icon">
-
         {% if user.is_authenticated %}
         <button class="user-btn" onclick="toggleDropdown()">{{ user.username }}</button>
         <div class="dropdown">
-            <a href="#">Profil</a>
-            <a href="#">Hisob ma'lumotlari</a>
+            <div class="user-details">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <a href="">Profil</a>
+            </div>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="logout-btn">Logout</button>
             </form>
         </div>
         {% else %}
-        <div class="auth-buttons">
-            <a href="{% url 'login' %}" class="user-btn">Login</a>
-            <a href="{% url 'signup' %}" class="user-btn">Register</a>
-        </div>
+        <a href="{% url 'login' %}" class="user-btn" onclick="hideVideoPlayer()">Ro'yxatdan o'tish</a>
+        <a href="{% url 'signup' %}" class="user-btn" onclick="hideVideoPlayer()">Kirish</a>
         {% endif %}
     </div>
 </nav>
@@ -234,6 +80,8 @@
         <source src="{{ select_movies.video_fayl.url }}" type="video/mp4">
         Sizning brauzeringiz videoni qo‘llab-quvvatlamaydi.
     </video>
+
+    <!-- Video haqida ma'lumot -->
     <div class="video-info">
         <div class="video-title">
             <h3>{{ select_movies.name }}</h3>
@@ -256,6 +104,11 @@
     <button id="play-now-btn" class="play-now-button" onclick="playNow()">Play Now</button>
 </div>
 
+<!-- Sound tugmasi -->
+<div class="sound-button-container">
+    <button id="sound-btn" class="sound-button" onclick="toggleSound()">🔇</button>
+</div>
+
 <!-- Video Modal -->
 <div id="video-modal" class="video-modal">
     <button class="close-modal" onclick="closeModal()">&times;</button>
@@ -263,44 +116,82 @@
         <source src="{{ select_movies.video_fayl.url }}" type="video/mp4">
         Sizning brauzeringiz videoni qo‘llab-quvvatlamaydi.
     </video>
+
+    <div class="video-controls">
+        <button onclick="rewindVideo()">⏪ Orqaga</button>
+        <button onclick="togglePlayPause()">⏯️ Pause/Play</button>
+        <button onclick="forwardVideo()">⏩ Oldinga</button>
+    </div>
 </div>
 
 {% block content %}
 {% endblock %}
 
+<!-- JavaScript kodlari -->
 <script>
+
     function toggleDropdown() {
         var dropdown = document.querySelector('.dropdown');
         dropdown.classList.toggle('active');
     }
 
-    function playNow() {
+    function openModal() {
         const modal = document.getElementById('video-modal');
+        const video = document.getElementById('modal-video');
         modal.style.display = 'flex';
-        document.getElementById('modal-video').play();
+        video.play();
     }
 
     function closeModal() {
         const modal = document.getElementById('video-modal');
-        document.getElementById('modal-video').pause();
+        const video = document.getElementById('modal-video');
+        video.pause();
         modal.style.display = 'none';
     }
-    function toggleDropdown() {
-    var dropdown = document.querySelector('.dropdown');
-    dropdown.classList.toggle('active');
-}
 
-function playNow() {
-    const modal = document.getElementById('video-modal');
-    modal.style.display = 'flex';
-    document.getElementById('modal-video').play();
-}
+    function togglePlayPause() {
+        const video = document.getElementById('modal-video');
+        video.paused ? video.play() : video.pause();
+    }
 
-function closeModal() {
-    const modal = document.getElementById('video-modal');
-    document.getElementById('modal-video').pause();
-    modal.style.display = 'none';
-}
+    function rewindVideo() {
+        const video = document.getElementById('modal-video');
+        video.currentTime -= 10;
+    }
+
+    function forwardVideo() {
+        const video = document.getElementById('modal-video');
+        video.currentTime += 10;
+    }
+
+    function toggleSound() {
+        const video = document.getElementById('intro-video');
+        const soundBtn = document.getElementById('sound-btn');
+        video.muted = !video.muted;
+        soundBtn.textContent = video.muted ? '🔇' : '🔊';
+    }
+
+    function playNow() {
+        openModal();
+    }
+
+    // Video playerini yashirish
+    function hideVideoPlayer() {
+        const video = document.getElementById('intro-video');
+        const playNowBtn = document.getElementById('play-now-btn');
+        const soundBtn = document.getElementById('sound-btn');
+
+        video.style.display = 'none'; // Videoni yashirish
+        playNowBtn.style.display = 'none'; // "Play Now" tugmasini yashirish
+        soundBtn.style.display = 'none'; // "Sound" tugmasini yashirish
+    }
+
+    // Kirish va ro'yxatdan o'tish tugmasi bosilganida video, Play Now va Sound tugmalarini yashirish
+    document.querySelectorAll('.user-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            hideVideoPlayer();
+        });
+    });
 
 </script>
 
