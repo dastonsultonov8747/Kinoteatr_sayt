@@ -1,7 +1,8 @@
 import random
 from django.shortcuts import render
 from .models import Serial, Kinolar, Serial_item, Multfilm, Anime_item, Anime
-from .serializers import SerialSerializer, KinolarSerializer, SerialItemSerializer, MultfilmSerializer
+from .serializers import SerialSerializer, KinolarSerializer, SerialItemSerializer, MultfilmSerializer, AnimeSerializer, \
+    AnimeItemSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -496,3 +497,89 @@ class MultfilmDetailApi(APIView):
             return Response({'deleted': True})
         except Multfilm.DoesNotExist:
             return Response({'error': 'Multfilm not found'}, status=404)
+
+
+class AnimeListApi(APIView):
+    def get(self, request):
+        anime = Anime.objects.all()
+        serializer = AnimeSerializer(anime, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = AnimeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+
+class AnimeDetailApi(APIView):
+    def get(self, request, pk):
+        try:
+            anime = Anime.objects.get(id=pk)
+        except Anime.DoesNotExist:
+            return Response({'error': 'Anime not found'}, status=404)
+        serializer = AnimeSerializer(anime)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        try:
+            anime = Anime.objects.get(id=pk)
+        except Anime.DoesNotExist:
+            return Response({'error': 'Anime not found'}, status=404)
+        serializer = AnimeSerializer(instance=anime, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request, pk):
+        try:
+            anime = Anime.objects.get(id=pk)
+            anime.delete()
+            return Response({'deleted': True})
+        except Anime.DoesNotExist:
+            return Response({'error': 'Anime not found'}, status=404)
+
+
+class AnimeItemApi(APIView):
+    def get(self, request, pk):
+        anime_items = Anime_item.objects.filter(anime_id=pk)
+        serializer = AnimeItemSerializer(anime_items, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, pk):
+        serializer = AnimeItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+
+class AnimeItemDetailApi(APIView):
+    def get(self, request, pk):
+        try:
+            anime_item = Anime_item.objects.get(id=pk)
+        except Anime_item.DoesNotExist:
+            return Response({'error': 'Anime item not found'}, status=404)
+        serializer = AnimeItemSerializer(anime_item)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        try:
+            anime_item = Anime_item.objects.get(id=pk)
+        except Anime_item.DoesNotExist:
+            return Response({'error': 'Anime item not found'}, status=404)
+        serializer = AnimeItemSerializer(instance=anime_item, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request, pk):
+        try:
+            anime_item = Anime_item.objects.get(id=pk)
+            anime_item.delete()
+            return Response({'deleted': True})
+        except Anime_item.DoesNotExist:
+            return Response({'error': 'Anime item not found'}, status=404)

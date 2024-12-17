@@ -1,4 +1,4 @@
-from .models import Serial, Serial_item, Kinolar, Multfilm
+from .models import Serial, Serial_item, Kinolar, Multfilm, Anime, Anime_item
 from rest_framework import serializers
 
 
@@ -23,4 +23,16 @@ class KinolarSerializer(serializers.ModelSerializer):
 class MultfilmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Multfilm
+        fields = '__all__'
+
+
+class AnimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Anime
+        fields = '__all__'
+
+
+class AnimeItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Anime_item
         fields = '__all__'
