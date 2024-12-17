@@ -10,7 +10,7 @@ body {
     background: radial-gradient(circle at 50% 46.83%, #ab0511 9.23%, #450207 85%);
     margin-top: 60px; /* Adjust for fixed navbar */
 }
-a{
+a {
     decoration:none;
 }
 

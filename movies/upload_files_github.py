@@ -28,16 +28,27 @@ class GitHubStorage(Storage):
         file_path = f"images/{Path(name).name}"  # Fayl `images` papkasiga yuklanadi
         encoded_content = base64.b64encode(content.read()).decode("utf-8")
 
+        # GitHub faylni olish
         url = self.GITHUB_API_URL.format(username=self.username, repo=self.repo, file_path=file_path)
+        response = requests.get(url, headers=self.GITHUB_HEADERS)
+
+        if response.status_code == 200:
+            sha = response.json()['sha']  # Agar fayl mavjud bo'lsa, uning sha qiymatini olish
+        else:
+            sha = None  # Faylni yaratish, agar mavjud bo'lmasa
+
+        # Faylni yuklash yoki yangilash
         data = {
-            "message": f"Add {name}",
-            "content": encoded_content
+            "message": f"Add {name}" if sha is None else f"Update {name}",
+            "content": encoded_content,
+            "sha": sha  # Agar fayl yangilanayotgan bo'lsa, sha parametrini qo'shish
         }
 
+        # PUT so'rovi yuborish
         response = requests.put(url, headers=self.GITHUB_HEADERS, json=data)
 
-        if response.status_code == 201:
-            # Fayl muvaffaqiyatli yuklandi
+        if response.status_code == 201 or response.status_code == 200:
+            # Fayl muvaffaqiyatli yuklandi yoki yangilandi
             return self._get_file_url(file_path)
         else:
             # Xatolik yuz berdi
@@ -65,10 +76,9 @@ class GitHubStorage(Storage):
         # Faylni yuklab, `sha` (file hash) olish
         get_response = requests.get(url, headers=self.GITHUB_HEADERS)
         if get_response.status_code == 200:
-            sha = get_response.json()['sha']
 
             # Faylni o'chirish uchun API chaqiruvi
-            delete_data = {"message": f"Delete {name}", "sha": sha}
+            delete_data = {"message": f"Delete {name}", }
             delete_response = requests.delete(url, headers=self.GITHUB_HEADERS, json=delete_data)
 
             if delete_response.status_code == 200:

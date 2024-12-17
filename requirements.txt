@@ -13,3 +13,4 @@ requests
 sqlparse
 tzdata
 urllib3
+python-decouple

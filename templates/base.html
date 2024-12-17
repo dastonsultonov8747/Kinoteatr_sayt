@@ -4,73 +4,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>SXD Tube</title>
-
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 <!-- Navbar -->
 <nav class="navbar">
+    <!-- Logo qismi -->
     <div class="logo">
         <img src="https://t4.ftcdn.net/jpg/04/67/15/09/360_F_467150902_zUs6Dvp9wJLGOoQRMOqGBtXaqXAJOFTO.jpg"
              alt="SXD Logo">
-        <span>DXS Tube</span>
+        <span>SXD Tube</span>
     </div>
 
+    <!-- Home bo'limi -->
     <div class="home">
         <a href="{% url 'index' %}">Home</a>
     </div>
 
+    <!-- Menu bo'limi -->
     <div class="menu">
         <ul>
-            <li><a href="{% url 'multfilimlar'%}">Multfilm</a></li>
-            <li><a href="{%url 'animelar'%}">Anime</a></li>
+            <li><a href="{% url 'multfilimlar' %}">Multfilm</a></li>
+            <li><a href="#">Anime</a></li>
             <li><a href="{% url 'kinolar' %}">Kinolar</a></li>
-            <li><a href="{% url 'seriallar'%}">Seriallar</a></li>
+            <li><a href="{% url 'seriallar' %}">Seriallar</a></li>
         </ul>
     </div>
 
+    <!-- Qidiruv oynasi -->
     <div class="search-call">
         <input type="text" placeholder="Qidirish...">
         <button class="call-icon">🔎</button>
     </div>
 
+    <!-- Foydalanuvchi menyusi -->
     <div class="user-interface">
         <img class="image"
              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgqugyJge8XSwS5JVVpb1_BxA-w2Ue8H8Kiw&s"
              alt="User Icon">
-        <button class="user-btn" onclick="toggleDropdown()">User</button>
+
+        {% if user.is_authenticated %}
+        <button class="user-btn" onclick="toggleDropdown()">{{ user.username }}</button>
         <div class="dropdown">
             <a href="#">Profil</a>
-            <a href="#">Logout</a>
-            <a href="#">user@example.com</a>
+            <!-- Logout uchun forma -->
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+            <a href="#">{{ user.email }}</a>
         </div>
+        {% else %}
+        <a href="{% url 'login' %}" class="user-btn">Login</a>
+        <a href="{% url 'register' %}" class="user-btn">Register</a>
+        {% endif %}
     </div>
 </nav>
 
-<!-- Video Section -->
+<!-- Video bo'limi -->
 <div class="container-video-katta">
     <video id="intro-video" class="responsive-video" autoplay muted loop>
         <source src="{{ select_movies.video_fayl.url }}" type="video/mp4">
         Sizning brauzeringiz videoni qo‘llab-quvvatlamaydi.
     </video>
 
+    <!-- Video haqida ma'lumot -->
     <div class="video-info">
         <div class="video-title">
             <h3>{{ select_movies.name }}</h3>
-            <p>{{ select_movies.description }}</p>
+            <p class="reyting">
+                {% for i in ratings %}
+                {% if forloop.counter <= select_movies.reyting %}
+                <i class="fa-solid fa-star" style="color: red;"></i>
+                {% else %}
+                <i class="fa-regular fa-star" style="color: gray;"></i>
+                {% endif %}
+                {% endfor %}
+            </p>
+            <p class="sight-age">Ko'rish yoshi: {{ select_movies.sight_age }}+</p>
         </div>
-
     </div>
-
 </div>
 
+<!-- Play Now tugmasi -->
 <div class="play-now-button-container">
     <button id="play-now-btn" class="play-now-button" onclick="playNow()">Play Now</button>
 </div>
-<!-- Sound Toggle Button -->
+
+<!-- Sound tugmasi -->
 <div style="position: absolute; top: 90%; z-index: 10; left: 80%;">
     <button id="sound-btn" class="sound-button" onclick="toggleSound()">🔇</button>
 </div>
@@ -83,7 +106,7 @@
         Sizning brauzeringiz videoni qo‘llab-quvvatlamaydi.
     </video>
 
-    <!-- Video Controls -->
+    <!-- Video boshqaruv tugmalari -->
     <div class="video-controls">
         <button onclick="rewindVideo()">⏪ Orqaga</button>
         <button onclick="togglePlayPause()">⏯️ Pause/Play</button>
@@ -94,62 +117,53 @@
 {% block content %}
 {% endblock %}
 
+<!-- JavaScript kodlari -->
 <script>
-    // Modalni ochish funksiyasi
+    function toggleDropdown() {
+        var dropdown = document.querySelector('.dropdown');
+        dropdown.classList.toggle('active');
+    }
+
     function openModal() {
         const modal = document.getElementById('video-modal');
         const video = document.getElementById('modal-video');
-        modal.style.display = 'flex'; // Modalni ko'rsatish
+        modal.style.display = 'flex';
         video.play();
     }
 
-    // Modalni yopish funksiyasi
     function closeModal() {
         const modal = document.getElementById('video-modal');
         const video = document.getElementById('modal-video');
-        video.pause(); // Video pauza
-        modal.style.display = 'none'; // Modalni yashirish
+        video.pause();
+        modal.style.display = 'none';
     }
 
-    // Video boshqaruv funksiyalari
     function togglePlayPause() {
         const video = document.getElementById('modal-video');
-        if (video.paused) {
-            video.play();
-        } else {
-            video.pause();
-        }
+        video.paused ? video.play() : video.pause();
     }
 
     function rewindVideo() {
         const video = document.getElementById('modal-video');
-        video.currentTime -= 10; // 10 sekund orqaga
+        video.currentTime -= 10;
     }
 
     function forwardVideo() {
         const video = document.getElementById('modal-video');
-        video.currentTime += 10; // 10 sekund oldinga
+        video.currentTime += 10;
     }
 
-    // Ovozni boshqarish funksiyasi
     function toggleSound() {
         const video = document.getElementById('intro-video');
         const soundBtn = document.getElementById('sound-btn');
-        if (video.muted) {
-            video.muted = false;
-            soundBtn.textContent = '🔊'; // Ovozni yoqish
-        } else {
-            video.muted = true;
-            soundBtn.textContent = '🔇'; // Ovozni o'chirish
-        }
+        video.muted = !video.muted;
+        soundBtn.textContent = video.muted ? '🔇' : '🔊';
     }
 
-    // Play Now tugmasini bosganda videoni ochish
     function playNow() {
         openModal();
     }
 </script>
-
 <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

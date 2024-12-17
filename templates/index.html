@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+<head>
+    <!-- Font Awesome qo'shish -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
 
 <style>
     /* Navbar va umumiy kontainerlar uchun */
@@ -9,9 +13,8 @@
         padding: 10px;
         box-sizing: border-box;
         font-size: 1.5rem;
-        margin-top:20px;
+        margin-top: 20px;
         margin-bottom: 40px;
-
     }
 
     .menu_title {
@@ -31,7 +34,6 @@
         cursor: pointer;
     }
 
-
     /* Karta va kino ma'lumotlari */
     .container {
         max-width: 100%;
@@ -49,7 +51,7 @@
     .card {
         display: inline-block;
         position: relative;
-        width: 220px; /* Karta eni */
+        width: 250px; /* Karta eni kattalashtirildi */
         border: none;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         overflow: hidden; /* Chetdagi rasmni yashirish */
@@ -58,8 +60,8 @@
 
     .card-img-top {
         width: 100%;
-        height: 300px; /* Rasm balandligi */
-        object-fit: cover;
+        height: 350px; /* Rasm balandligi kattalashtirildi */
+        object-fit: cover; /* Rasmlar bir xil proporsiyada chiqadi */
     }
 
     .card-info {
@@ -84,18 +86,14 @@
         font-size: 14px;
         margin: 0;
     }
-    .card hover{
-
-    }
 </style>
 
 <div class="kontainer">
     <div class="menu_title">
         <h3 class="menu_heading">Kinolar</h3>
-        <a href="{% url 'kinolar'%}">
+        <a href="{% url 'kinolar' %}">
             <h4 class="view_all">Hammasini ko'rish</h4>
         </a>
-
     </div>
 </div>
 
@@ -103,22 +101,23 @@
     <div class="row g-4">
         {% for kinolar in kinolars %}
         <div class="card">
-            <img src="{{ kinolar.img.url }}" class="card-img-top" alt="Image">
-            <div class="card-info">
-                <h5 class="card-title">{{ kinolar.name }}</h5>
-                <p class="card-genre">Janri :{{ kinolar.genre }}</p>
-                <p class="reyting">
-                    {% for i in ratings %}
-                    {% if i <= kino.reyting %}
-                    <i class="fa-solid fa-star"></i>
-                    {% else %}
-                    <i class="fa-regular fa-star"></i>
-                    {% endif %}
-                    {% endfor %}
-                </p>
-                <p class="card-description">Tavsifi :{{ kinolar.description }}</p>
+            <a href="{% url 'kinolar'%}">
+                <img src="{{ kinolar.img.url }}" class="card-img-top" alt="Image">
+                <div class="card-info">
+                    <h5 class="card-title">{{ kinolar.name }}</h5>
 
-            </div>
+                    <p class="reyting">
+                        {% for i in ratings %}
+                        {% if i <= kino.reyting %}
+                        <i class="fa-solid fa-star"></i> <!-- Fa-solid yulduzcha -->
+                        {% else %}
+                        <i class="fa-regular fa-star"></i> <!-- Fa-regular yulduzcha -->
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="card-description">Tavsifi: {{ kinolar.description }}</p>
+                </div>
+            </a>
         </div>
         {% endfor %}
     </div>
@@ -127,7 +126,7 @@
 <div class="kontainer">
     <div class="menu_title">
         <h3 class="menu_heading">Multfilimlar</h3>
-        <a href="{% url 'multfilimlar'%}">
+        <a href="{% url 'multfilimlar' %}">
             <h4 class="view_all">Hammasini ko'rish</h4>
         </a>
     </div>
@@ -137,95 +136,53 @@
     <div class="row g-4">
         {% for kinolar in multfilms %}
         <div class="card">
-            <img src="{{ kinolar.img.url }}" class="card-img-top" alt="Image">
-            <div class="card-info">
-                <h5 class="card-title">{{ kinolar.name }}</h5>
-                <p class="card-genre">Janri :{{ kinolar.genre }}</p>
-                <p class="reyting">
-                    {% for i in ratings %}
-                    {% if i <= kino.reyting %}
-                    <i class="fa-solid fa-star"></i>
-                    {% else %}
-                    <i class="fa-regular fa-star"></i>
-                    {% endif %}
-                    {% endfor %}
-                </p>
-                <p class="card-description">Tavsifi :{{ kinolar.description }}</p>
-            </div>
+            <a href="{% url 'multfilimlar'%}">
+                <img src="{{ kinolar.img.url }}" class="card-img-top" alt="Image">
+                <div class="card-info">
+                    <h5 class="card-title">{{ kinolar.name }}</h5>
+                    <p class="reyting">
+                        {% for i in ratings %}
+                        {% if forloop.counter <= select_movies.reyting %}
+                        <i class="fa-solid fa-star" style="color: red;"></i>
+                        {% else %}
+                        <i class="fa-regular fa-star" style="color: gray;"></i>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+
+                    <p class="card-description">Tavsifi: {{ kinolar.description }}</p>
+                </div>
+            </a>
         </div>
         {% endfor %}
     </div>
 </div>
 
-
-<div class="kontainer">
-    <div class="menu_title">
-        <h3 class="menu_heading">Seriallar</h3>
-        <a href="{% url 'seriallar'%}">
-            <h4 class="view_all">Hammasini ko'rish</h4>
-        </a>
-    </div>
-</div>
 
 <div class="container my-5">
     <div class="row g-4">
-        {% for serial in serials %}
+        {% for kinolar in serials %}
         <div class="card">
-            <img src="{{ serial.img.url }}" class="card-img-top" alt="Image">
-            <div class="card-info">
-                <h5 class="card-title">{{ kinolar.name }}</h5>
-                <p class="card-genre">Janri :{{ kinolar.genre }}</p>
-                <p class="reyting">
-                    {% for i in ratings %}
-                    {% if i <= kino.reyting %}
-                    <i class="fa-solid fa-star"></i>
-                    {% else %}
-                    <i class="fa-regular fa-star"></i>
-                    {% endif %}
-                    {% endfor %}
-                </p>
-                <p class="card-description">Tavsifi :{{ kinolar.description }}</p></div>
+            <a href="{% url 'seriallar'%}">
+                <img src="{{ kinolar.img.url }}" class="card-img-top" alt="Image">
+                <div class="card-info">
+                    <h5 class="card-title">{{ kinolar.name }}</h5>
+
+                    <p class="reyting">
+                        {% for i in ratings %}
+                        {% if i <= kino.reyting %}
+                        <i class="fa-solid fa-star"></i> <!-- Fa-solid yulduzcha -->
+                        {% else %}
+                        <i class="fa-regular fa-star"></i> <!-- Fa-regular yulduzcha -->
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="card-description">Tavsifi: {{ kinolar.description }}</p>
+                </div>
+            </a>
         </div>
         {% endfor %}
     </div>
 </div>
 
-
-<div class="kontainer">
-    <div class="menu_title">
-        <h3 class="menu_heading">Anime</h3>
-        <a href="{% url 'animelar'%}">
-            <h4 class="view_all">Hammasini ko'rish</h4>
-        </a>
-    </div>
-</div>
-
-<div class="container my-5">
-    <div class="row g-4">
-        {% for anime in animes %}
-        <div class="card">
-            <img src="{{ anime.img.url }}" class="card-img-top" alt="Image">
-            <div class="card-info">
-                <h5 class="card-title">{{ kinolar.name }}</h5>
-                <p class="card-genre">Janri :{{ kinolar.genre }}</p>
-                <p class="reyting">
-                    {% for i in ratings %}
-                    {% if i <= kino.reyting %}
-                    <i class="fa-solid fa-star"></i>
-                    {% else %}
-                    <i class="fa-regular fa-star"></i>
-                    {% endif %}
-                    {% endfor %}
-                </p>
-                <p class="card-description">Tavsifi :{{ kinolar.description }}</p></div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
-
-<video id="intro-video" class="responsive-video" autoplay muted loop>
-    <source src="" type="video/mp4">
-    Sizning brauzeringiz videoni qo‘llab-quvvatlamaydi.
-</video>
 {% endblock content %}
