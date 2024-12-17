@@ -91,7 +91,7 @@
 <div class="kontainer">
     <div class="menu_title">
         <h3 class="menu_heading">Kinolar</h3>
-        <a href="{% url 'kinolar' %}">
+        <a href="{% url 'kinolar' %}" style="text-decoration: none;">
             <h4 class="view_all">Hammasini ko'rish</h4>
         </a>
     </div>
@@ -101,7 +101,7 @@
     <div class="row g-4">
         {% for kinolar in kinolars %}
         <div class="card">
-            <a href="{% url 'kinolar'%}">
+            <a href="{% url 'kinolar'%}" style="text-decoration: none;">
                 <img src="{{ kinolar.img.url }}" class="card-img-top" alt="Image">
                 <div class="card-info">
                     <h5 class="card-title">{{ kinolar.name }}</h5>
@@ -126,7 +126,7 @@
 <div class="kontainer">
     <div class="menu_title">
         <h3 class="menu_heading">Multfilimlar</h3>
-        <a href="{% url 'multfilimlar' %}">
+        <a href="{% url 'multfilimlar' %}" style="text-decoration: none;">
             <h4 class="view_all">Hammasini ko'rish</h4>
         </a>
     </div>
@@ -136,7 +136,7 @@
     <div class="row g-4">
         {% for kinolar in multfilms %}
         <div class="card">
-            <a href="{% url 'multfilimlar'%}">
+            <a href="{% url 'multfilimlar'%}" style="text-decoration: none;">
                 <img src="{{ kinolar.img.url }}" class="card-img-top" alt="Image">
                 <div class="card-info">
                     <h5 class="card-title">{{ kinolar.name }}</h5>
@@ -158,6 +158,15 @@
     </div>
 </div>
 
+
+<div class="kontainer">
+    <div class="menu_title">
+        <h3 class="menu_heading">Seriallar</h3>
+        <a href="{% url 'seriallar' %}" style="text-decoration: none;">
+            <h4 class="view_all">Hammasini ko'rish</h4>
+        </a>
+    </div>
+</div>
 
 <div class="container my-5">
     <div class="row g-4">
