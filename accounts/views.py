@@ -3,16 +3,19 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import CustomUserCreationForm
 
 
-def signup_view(request):
+def user_login(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
             login(request, user)
-            return redirect('/')
+            return redirect('index')  # 'index' - bu asosiy sahifangizning URL nomi
+        else:
+            return render(request, 'login.html', {'message': 'Username yoki parol noto\'g\'ri'})
     else:
-        form = CustomUserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})
+        return render(request, 'login.html')
 
 
 def login_view(request):
@@ -22,7 +25,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('base')  # Muvaffaqiyatli login qilinganidan keyin bosh sahifaga
+            return redirect('index')  # Muvaffaqiyatli login qilinganidan keyin bosh sahifaga
         else:
             return render(request, 'registration/login.html', {'error': 'Invalid credentials'})
 
