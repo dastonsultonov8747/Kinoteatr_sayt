@@ -142,18 +142,20 @@
             </p>
             <p class="sight-age">Ko'rish yoshi: {{ select_movies.sight_age }}+</p>
         </div>
+        <br>
+        <!-- Play Now tugmasi -->
+        <div class="play-now-button-container">
+            <button id="play-now-btn" class="play-now-button" onclick="playNow()">Play Now</button>
+        </div><br>
+
+        <!-- Sound tugmasi -->
+        <div class="sound-button-container">
+            <button id="sound-btn" class="sound-button" onclick="toggleSound()">🔇</button>
+        </div>
     </div>
+
 </div>
 
-<!-- Play Now tugmasi -->
-<div class="play-now-button-container">
-    <button id="play-now-btn" class="play-now-button" onclick="playNow()">Play Now</button>
-</div>
-
-<!-- Sound tugmasi -->
-<div class="sound-button-container">
-    <button id="sound-btn" class="sound-button" onclick="toggleSound()">🔇</button>
-</div>
 
 <!-- Video Modal -->
 <div id="video-modal" class="video-modal">
